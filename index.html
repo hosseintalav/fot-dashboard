@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>داشبورد مدیریت مسابقات | Footino</title>
+  <title>داشبورد مدیریت | Footino</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,123 +15,315 @@
     <!-- ============ Header ============ -->
     <header>
       <div>
-        <h1>داشبورد مدیریت مسابقات</h1>
-        <p class="subtitle">مدیریت فایل <code>matches.json</code> — مخزن Footino</p>
+        <h1>داشبورد مدیریت</h1>
+        <p class="subtitle">مدیریت فایل‌های <code>matches.json</code> و <code>notif.json</code> — مخزن Footino</p>
       </div>
     </header>
 
-    <!-- ============ Toolbar ============ -->
-    <div class="toolbar">
-      <button class="btn btn-ghost" id="reloadBtn" type="button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        بارگذاری مجدد
+    <!-- ============ Tabs ============ -->
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="matches" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg>
+        مسابقات
       </button>
-
-      <button class="btn btn-ghost" id="deleteFinishedBtn" type="button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-        حذف مسابقات تمام‌شده
+      <button class="tab" data-tab="notifications" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        اعلان‌ها
       </button>
+      <button class="tab" data-tab="settings" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        تنظیمات
+      </button>
+      <span class="tab-indicator" id="tabIndicator"></span>
+    </nav>
 
-      <div class="spacer"></div>
+    <!-- ============================================================
+         پنل مسابقات
+         ============================================================ -->
+    <div id="panel-matches" class="tab-panel active">
 
-      <div class="toolbar-status" id="toolbarStatus">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">در حال بارگذاری...</span>
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="reloadBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          بارگذاری مجدد
+        </button>
+
+        <button class="btn btn-ghost" id="deleteFinishedBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          حذف مسابقات تمام‌شده
+        </button>
+
+        <div class="spacer"></div>
+
+        <div class="toolbar-status" id="toolbarStatus">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">در حال بارگذاری...</span>
+        </div>
+
+        <button class="btn btn-ghost" id="pushBtn" type="button" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          افزودن به برنامه
+        </button>
       </div>
 
-      <button class="btn btn-ghost" id="pushBtn" type="button" disabled>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-        افزودن به برنامه
-      </button>
+      <!-- Form -->
+      <section class="card">
+        <h2 id="formTitle">افزودن مسابقه جدید</h2>
+
+        <form id="matchForm" novalidate autocomplete="off">
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="date">تاریخ</label>
+              <input type="date" id="date" required>
+            </div>
+            <div class="field">
+              <label for="time">ساعت</label>
+              <input type="text" id="time" placeholder="19:30" inputmode="numeric" maxlength="5" required>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label for="team1">تیم اول</label>
+              <div class="input-wrap">
+                <div class="input-with-logo">
+                  <input type="text" id="team1" autocomplete="off" placeholder="نام تیم...">
+                  <img id="team1Preview" class="preview" src="assets/logo/no-image.png" alt="">
+                </div>
+                <div class="suggestions" id="team1Suggestions"></div>
+              </div>
+              <input type="hidden" id="team1Image" value="assets/logo/no-image.png">
+            </div>
+
+            <div class="field">
+              <label for="team2">تیم دوم</label>
+              <div class="input-wrap">
+                <div class="input-with-logo">
+                  <input type="text" id="team2" autocomplete="off" placeholder="نام تیم...">
+                  <img id="team2Preview" class="preview" src="assets/logo/no-image.png" alt="">
+                </div>
+                <div class="suggestions" id="team2Suggestions"></div>
+              </div>
+              <input type="hidden" id="team2Image" value="assets/logo/no-image.png">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="league">لیگ</label>
+            <div class="input-wrap">
+              <input type="text" id="league" placeholder="مثلاً: لیگ برتر انگلیس" autocomplete="off">
+              <div class="suggestions" id="leagueSuggestions"></div>
+            </div>
+          </div>
+
+          <div class="toggles">
+            <label class="toggle" title="در صورت فعال بودن، فیلد countdown در فایل JSON درج می‌شود">
+              <input type="checkbox" id="important">
+              <span class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </span>
+              <span>بازی مهم</span>
+            </label>
+
+            <label class="toggle" title="در صورت فعال بودن، فیلد notify با مقدار true در JSON درج می‌شود">
+              <input type="checkbox" id="notify">
+              <span class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              </span>
+              <span>اعلان</span>
+            </label>
+
+            <label class="toggle" title="در حالت روشن، فیلد isClub با مقدار true در JSON درج می‌شود">
+              <input type="checkbox" id="national" checked>
+              <span class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+              </span>
+              <span>بازی باشگاهی</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success" id="submitBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span id="submitLabel">افزودن مسابقه</span>
+            </button>
+
+            <button type="button" class="btn btn-ghost" id="cancelEditBtn" hidden>
+              لغو ویرایش
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Matches list -->
+      <section>
+        <div class="section-header">
+          <h2>برنامه مسابقات</h2>
+          <span class="count" id="matchCount">—</span>
+        </div>
+        <div id="matchesList"></div>
+      </section>
+
     </div>
 
-    <!-- ============ Form ============ -->
-    <section class="card">
-      <h2 id="formTitle">افزودن مسابقه جدید</h2>
+    <!-- ============================================================
+         پنل اعلان‌ها
+         ============================================================ -->
+    <div id="panel-notifications" class="tab-panel">
 
-      <form id="matchForm" novalidate autocomplete="off">
+      <!-- Toolbar اعلان‌ها -->
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="reloadNotifBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          بارگذاری مجدد
+        </button>
 
-        <div class="grid-2">
-          <div class="field">
-            <label for="date">تاریخ</label>
-            <input type="date" id="date" required>
-          </div>
-          <div class="field">
-            <label for="time">ساعت (مثلاً 19:30)</label>
-            <input type="text" id="time" placeholder="19:30" inputmode="numeric" maxlength="5" required>
-          </div>
+        <div class="spacer"></div>
+
+        <div class="toolbar-status" id="notifToolbarStatus">
+          <span class="status-dot" id="notifStatusDot"></span>
+          <span id="notifStatusText">در حال بارگذاری...</span>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label for="team1">تیم اول</label>
-            <div class="input-wrap">
-              <div class="input-with-logo">
-                <input type="text" id="team1" autocomplete="off" placeholder="نام تیم...">
-                <img id="team1Preview" class="preview" src="assets/logo/no-image.png" alt="">
-              </div>
-              <div class="suggestions" id="team1Suggestions"></div>
-            </div>
-            <input type="hidden" id="team1Image" value="assets/logo/no-image.png">
-          </div>
-
-          <div class="field">
-            <label for="team2">تیم دوم</label>
-            <div class="input-wrap">
-              <div class="input-with-logo">
-                <input type="text" id="team2" autocomplete="off" placeholder="نام تیم...">
-                <img id="team2Preview" class="preview" src="assets/logo/no-image.png" alt="">
-              </div>
-              <div class="suggestions" id="team2Suggestions"></div>
-            </div>
-            <input type="hidden" id="team2Image" value="assets/logo/no-image.png">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="league">لیگ</label>
-          <input type="text" id="league" placeholder="مثلاً: دوستانه باشگاهی" autocomplete="off">
-        </div>
-
-        <div class="toggles">
-          <label class="toggle" title="در صورت فعال بودن، فیلد countdown در فایل JSON درج می‌شود">
-            <input type="checkbox" id="important">
-            <span class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </span>
-            <span>بازی مهم</span>
-          </label>
-
-          <label class="toggle" title="در حالت روشن، فیلد isClub با مقدار true در JSON درج می‌شود">
-            <input type="checkbox" id="national" checked>
-            <span class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
-            </span>
-            <span>بازی ملی</span>
-          </label>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-success" id="submitBtn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span id="submitLabel">افزودن مسابقه</span>
-          </button>
-
-          <button type="button" class="btn btn-ghost" id="cancelEditBtn" hidden>
-            لغو ویرایش
-          </button>
-        </div>
-      </form>
-    </section>
-
-    <!-- ============ Matches list ============ -->
-    <section>
-      <div class="section-header">
-        <h2>برنامه مسابقات</h2>
-        <span class="count" id="matchCount">—</span>
+        <button class="btn btn-ghost" id="pushNotifBtn" type="button" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          ذخیره روی GitHub
+        </button>
       </div>
-      <div id="matchesList"></div>
-    </section>
+
+      <!-- فرم افزودن/ویرایش اعلان -->
+      <section class="card">
+        <h2 id="notifFormTitle">افزودن اعلان جدید</h2>
+
+        <form id="notifForm" novalidate autocomplete="off">
+
+          <div class="field">
+            <label for="notifId">شناسه (id)</label>
+            <input type="text" id="notifId" placeholder="announcement-003" autocomplete="off" dir="ltr" required>
+            <div class="field-hint">اگر خالی بگذارید، به صورت خودکار ساخته می‌شود.</div>
+          </div>
+
+          <div class="field">
+            <label for="notifTitle">عنوان</label>
+            <input type="text" id="notifTitle" placeholder="مثلاً: نسخه جدید Footino منتشر شد!" required>
+          </div>
+
+          <div class="field">
+            <label for="notifMessage">متن اعلان</label>
+            <textarea id="notifMessage" rows="3" placeholder="متن کامل اعلان..." required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success" id="notifSubmitBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span id="notifSubmitLabel">افزودن اعلان</span>
+            </button>
+
+            <button type="button" class="btn btn-ghost" id="notifCancelEditBtn" hidden>
+              لغو ویرایش
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- لیست اعلان‌ها -->
+      <section>
+        <div class="section-header">
+          <h2>اعلان‌های فعلی</h2>
+          <span class="count" id="notifCount">—</span>
+        </div>
+        <div id="notifList"></div>
+      </section>
+
+    </div>
+
+    <!-- ============================================================
+         پنل تنظیمات — مدیریت تیم‌ها و لوگوها
+         ============================================================ -->
+    <div id="panel-settings" class="tab-panel">
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <button class="btn btn-ghost" id="reloadTeamsBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          بارگذاری مجدد کشورها
+        </button>
+
+        <div class="spacer"></div>
+
+        <div class="toolbar-status" id="teamsToolbarStatus">
+          <span class="status-dot" id="teamsStatusDot"></span>
+          <span id="teamsStatusText">—</span>
+        </div>
+
+        <button class="btn btn-primary" id="exportTeamsBtn" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          خروجی JSON تیم‌ها
+        </button>
+      </div>
+
+      <!-- فرم افزودن/ویرایش تیم سفارشی -->
+      <section class="card">
+        <h2 id="teamFormTitle">مدیریت تیم‌ها و لوگوها</h2>
+
+        <form id="teamForm" novalidate autocomplete="off">
+          <div class="grid-2">
+            <div class="field">
+              <label for="teamName">نام تیم</label>
+              <input type="text" id="teamName" placeholder="مثلاً: استقلال" required>
+            </div>
+            <div class="field">
+              <label for="teamLogo">مسیر لوگو</label>
+              <div class="input-with-logo">
+                <input type="text" id="teamLogo" dir="ltr" value="assets/logo/other/" placeholder="assets/logo/other/esteghlal.svg" required>
+                <img id="teamLogoPreview" class="preview" src="assets/logo/no-image.png" alt="">
+              </div>
+              <div class="field-hint">مسیر کامل فایل لوگو در مخزن. پیش‌فرض: <code dir="ltr">assets/logo/other/</code></div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success" id="teamSubmitBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span id="teamSubmitLabel">افزودن تیم</span>
+            </button>
+            <button type="button" class="btn btn-ghost" id="teamCancelEditBtn" hidden>
+              لغو ویرایش
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- تیم‌های سفارشی -->
+      <section>
+        <div class="section-header">
+          <h2>تیم‌های سفارشی</h2>
+          <span class="count" id="customTeamCount">—</span>
+        </div>
+        <div id="customTeamsList"></div>
+      </section>
+
+      <!-- تیم‌های پیش‌فرض (فقط خواندنی) -->
+      <section style="margin-top: 24px;">
+        <div class="section-header">
+          <h2>تیم‌های پیش‌فرض (فقط‌خواندنی)</h2>
+          <span class="count" id="builtinTeamCount">—</span>
+        </div>
+        <div id="builtinTeamsList"></div>
+      </section>
+
+      <!-- کشورها و پرچم‌ها -->
+      <section style="margin-top: 24px;">
+        <div class="section-header">
+          <h2>کشورها و پرچم‌ها</h2>
+          <span class="count" id="countryCount">—</span>
+        </div>
+        <div id="countriesList"></div>
+      </section>
+
+    </div>
 
   </div>
 
