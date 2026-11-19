@@ -1,11 +1,6 @@
 /* ====================================================================
-   admin.css — استایل داشبورد مدیریت مسابقات
+   admin.css — استایل داشبورد مدیریت
    ==================================================================== */
-/* ====================================================================
-   حذف افکت‌های آبی پیش‌فرض مرورگر
-   ==================================================================== */
-
-/* ۱) حذف outline آبی روی همه المان‌ها هنگام فوکوس */
 *:focus,
 *:focus-visible,
 *:focus-within {
@@ -13,23 +8,14 @@
   box-shadow: none;
 }
 
-/* ۲) حذف highlight آبی لمس روی موبایل (iOS/Android) */
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
 
-/* ۳) حذف رنگ آبی انتخاب متن (جایگزین با خاکستری ملایم) */
-::selection {
-  background: #cbd5e1;
-  color: #0f172a;
-}
-::-moz-selection {
-  background: #cbd5e1;
-  color: #0f172a;
-}
+::selection { background: #cbd5e1; color: #0f172a; }
+::-moz-selection { background: #cbd5e1; color: #0f172a; }
 
-/* ۴) حذف پس‌زمینه آبی/زرد autofill مرورگر (Chrome/Safari) */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -40,39 +26,19 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* ۵) حفظ حلقه فوکوس سفارشی برای دسترسی‌پذیری (کیبورد) */
-.field input:focus {
+.field input:focus,
+.field textarea:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
 }
 
 .btn:focus-visible,
 .icon-btn:focus-visible,
+.tab:focus-visible,
 .toggle:focus-within {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-/* ۶) حذف فلش‌های پیش‌فرض input[type=number] (در صورت استفاده در آینده) */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-/* ۷) حذف رنگ آبی لینک‌ها (در صورت وجود) */
-a,
-a:visited,
-a:hover,
-a:active {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* ۸) حذف استایل پیش‌فرض دکمه‌ها و input ها در فایرفاکس */
 button,
 input,
 select,
@@ -85,35 +51,17 @@ textarea {
   appearance: none;
 }
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
+input::placeholder,
+textarea::placeholder { color: #94a3b8; opacity: 1; }
 
-/* ۹) حذف رنگ آبی placeholder در سافاری */
-input::placeholder {
-  color: #94a3b8;
-  opacity: 1;
-}
-
-/* ۱۰) حذف استایل پیش‌فرض date picker در برخی مرورگرها */
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   opacity: 0.55;
   transition: opacity 0.15s;
 }
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
+input[type="date"]::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 
-/* ۱۱) حذف رنگ فوکوس پیش‌فرض در Edge/IE */
-input::-ms-clear,
-input::-ms-reveal {
-  display: none;
-}
-
-
+a, a:visited, a:hover, a:active { color: inherit; text-decoration: none; }
 
 :root {
   --bg: #f1f5f9;
@@ -140,7 +88,6 @@ input::-ms-reveal {
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html, body { height: 100%; }
 
 body {
@@ -178,11 +125,7 @@ header h1 {
   color: var(--text);
 }
 
-.subtitle {
-  font-size: 0.8rem;
-  color: var(--text-2);
-  margin-top: 3px;
-}
+.subtitle { font-size: 0.8rem; color: var(--text-2); margin-top: 3px; }
 
 .subtitle code {
   background: #e2e8f0;
@@ -191,6 +134,62 @@ header h1 {
   font-size: 0.78rem;
   direction: ltr;
   display: inline-block;
+}
+
+/* ---------------- Tabs ---------------- */
+.tabs {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-2);
+  background: transparent;
+  border-radius: calc(var(--radius) - 6px);
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--primary); }
+.tab svg { flex-shrink: 0; }
+
+.tab-indicator {
+  position: absolute;
+  bottom: 6px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tab-panel { display: none; animation: fadeIn 0.25s ease; }
+.tab-panel.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ---------------- Toolbar ---------------- */
@@ -227,11 +226,7 @@ header h1 {
   transition: background 0.2s;
 }
 
-.status-dot.dirty {
-  background: var(--warning);
-  animation: pulse 1.8s ease-in-out infinite;
-}
-
+.status-dot.dirty { background: var(--warning); animation: pulse 1.8s ease-in-out infinite; }
 .status-dot.saved { background: var(--success); }
 .status-dot.loading { background: var(--primary); animation: pulse 1.2s ease-in-out infinite; }
 
@@ -250,11 +245,7 @@ header h1 {
   box-shadow: var(--shadow-sm);
 }
 
-.card h2 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
+.card h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 16px; }
 
 /* ---------------- Form ---------------- */
 .grid-2 {
@@ -263,11 +254,7 @@ header h1 {
   gap: 12px;
 }
 
-.field {
-  margin-bottom: 12px;
-  position: relative;
-  min-width: 0;
-}
+.field { margin-bottom: 12px; position: relative; min-width: 0; }
 
 .field label {
   display: block;
@@ -278,7 +265,8 @@ header h1 {
 }
 
 .field input[type="text"],
-.field input[type="date"] {
+.field input[type="date"],
+.field textarea {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-strong);
@@ -289,25 +277,34 @@ header h1 {
   color: var(--text);
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
   min-width: 0;
+  resize: vertical;
 }
 
-.field input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13);
-  background: var(--surface);
+.field textarea { min-height: 70px; line-height: 1.6; }
+
+.field input:focus,
+.field textarea:focus { background: var(--surface); }
+
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-3); }
+
+.field-hint {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-top: 4px;
 }
 
-.field input::placeholder { color: var(--text-3); }
+.field-hint code {
+  background: #e2e8f0;
+  padding: 0 4px;
+  border-radius: 4px;
+  direction: ltr;
+  display: inline-block;
+}
 
 .input-wrap { position: relative; }
 
-.input-with-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+.input-with-logo { display: flex; align-items: center; gap: 8px; }
 .input-with-logo input { flex: 1 1 auto; min-width: 0; }
 
 .preview {
@@ -352,18 +349,9 @@ header h1 {
 .suggestion-item:hover,
 .suggestion-item.active { background: var(--primary-soft); }
 
-.suggestion-item img {
-  width: 26px;
-  height: 26px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
+.suggestion-item img { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
 
-.suggestion-empty {
-  padding: 10px 12px;
-  font-size: 0.82rem;
-  color: var(--text-3);
-}
+.suggestion-empty { padding: 10px 12px; font-size: 0.82rem; color: var(--text-3); }
 
 /* ---------------- Toggles ---------------- */
 .toggles {
@@ -456,14 +444,9 @@ header h1 {
 
 .btn-small { font-size: 0.8rem; padding: 7px 12px; }
 
-.form-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 6px;
-}
+.form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
 
-/* ---------------- Icon buttons (match cards) ---------------- */
+/* ---------------- Icon buttons ---------------- */
 .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -548,10 +531,7 @@ header h1 {
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 
-.match-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--border-strong);
-}
+.match-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
 
 .match-teams {
   display: flex;
@@ -569,11 +549,7 @@ header h1 {
   min-width: 0;
 }
 
-.team img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
+.team img { width: 48px; height: 48px; object-fit: contain; }
 
 .team span {
   font-weight: 600;
@@ -627,12 +603,7 @@ header h1 {
   flex-wrap: wrap;
 }
 
-.badges {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
+.badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
 .badge {
   display: inline-flex;
@@ -646,21 +617,69 @@ header h1 {
 
 .badge svg { flex-shrink: 0; }
 
-.badge-important {
-  background: #fef3c7;
-  color: #92400e;
-}
+.badge-important { background: #fef3c7; color: #92400e; }
+.badge-notify { background: #e0e7ff; color: #3730a3; }
 
-.badge-national {
-  background: #dbeafe;
-  color: #1e40af;
-}
+.match-actions { display: flex; gap: 6px; margin-right: auto; }
 
-.match-actions {
+/* ---------------- Notification cards ---------------- */
+.notif-card {
   display: flex;
-  gap: 6px;
-  margin-right: auto;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
+
+.notif-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+
+.notif-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.notif-body { flex: 1 1 auto; min-width: 0; }
+
+.notif-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.notif-message {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.notif-id {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  margin-top: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--surface-2);
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 5px;
+}
+
+.notif-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
 /* ---------------- Empty ---------------- */
 .empty {
@@ -701,11 +720,7 @@ header h1 {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-#loadingText {
-  font-size: 0.88rem;
-  color: var(--text-2);
-  font-weight: 500;
-}
+#loadingText { font-size: 0.88rem; color: var(--text-2); font-weight: 500; }
 
 /* ---------------- Toast ---------------- */
 .toast-container {
@@ -744,6 +759,114 @@ header h1 {
 .toast-info { background: #2563eb; }
 .toast-warning { background: #d97706; }
 
+/* ====================================================================
+   تنظیمات — مدیریت تیم‌ها
+   ==================================================================== */
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.team-row:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+
+.team-row img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  padding: 3px;
+}
+
+.team-row .team-info { flex: 1 1 auto; min-width: 0; }
+
+.team-row .team-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.team-row .team-path {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  direction: ltr;
+  text-align: right;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-row .team-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.team-badge-custom {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #166534;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.country-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-bottom: 6px;
+}
+
+.country-row img {
+  width: 32px;
+  height: 22px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+
+.country-row .country-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-2);
+  direction: ltr;
+  min-width: 28px;
+}
+
+.country-row .country-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  flex: 1 1 auto;
+}
+
+.country-row .country-path {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  direction: ltr;
+}
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 640px) {
   body { padding: 10px; }
@@ -753,58 +876,24 @@ header h1 {
   header h1 { font-size: 1.1rem; }
   .subtitle { font-size: 0.72rem; }
 
-  .toolbar {
-    padding: 10px;
-    gap: 8px;
-  }
+  .tabs { padding: 5px; }
+  .tab { padding: 8px 12px; font-size: 0.82rem; gap: 5px; }
+  .tab svg { width: 14px; height: 14px; }
+
+  .toolbar { padding: 10px; gap: 8px; }
   .toolbar .btn { flex: 1 1 auto; justify-content: center; }
   .toolbar .spacer { display: none; }
   .toolbar-status { width: 100%; order: 5; justify-content: center; font-size: 0.76rem; }
-  #pushBtn { width: 100%; order: 6; }
+  .toolbar .btn[id$="Btn"][id^="push"] { width: 100%; order: 6; }
 
   .card { padding: 16px 14px; }
-
   .grid-2 { gap: 8px; }
 
   .field { margin-bottom: 10px; }
   .field label { font-size: 0.74rem; margin-bottom: 4px; }
-  .field input[type="text"],
-  .field input[type="date"] {
-    padding: 8px 10px;
-    font-size: 0.84rem;
-  }
 
-  .preview { width: 32px; height: 32px; }
-
-  .team img { width: 40px; height: 40px; }
-  .team span { font-size: 0.78rem; }
-  .match-time { font-size: 0.98rem; }
-  .match-league { font-size: 0.64rem; max-width: 90px; padding: 2px 8px; }
-
-  .btn { padding: 8px 12px; font-size: 0.8rem; }
-  .btn-small { padding: 6px 10px; font-size: 0.75rem; }
-
-  .date-header { font-size: 0.82rem; }
-  .date-header .date-greg { font-size: 0.66rem; }
-
-  .toggle { padding: 7px 12px; font-size: 0.8rem; }
-
-  .toast-container { bottom: 12px; left: 12px; right: 12px; max-width: none; }
-}
-
-@media (max-width: 380px) {
-  body { padding: 8px; }
-  .grid-2 { gap: 6px; }
-  .field input[type="text"],
-  .field input[type="date"] {
-    padding: 7px 8px;
-    font-size: 0.78rem;
-  }
-  .field label { font-size: 0.7rem; }
-  .preview { width: 26px; height: 26px; padding: 2px; }
-  .team img { width: 34px; height: 34px; }
-  .team span { font-size: 0.72rem; }
-  .match-time { font-size: 0.88rem; }
-  .match-center { padding: 0 2px; gap: 3px; }
-  .match-league { display: none; }
+  .team-row { padding: 8px 10px; gap: 8px; }
+  .team-row img { width: 30px; height: 30px; }
+  .team-row .team-path { display: none; }
+  .country-row .country-path { display: none; }
 }
